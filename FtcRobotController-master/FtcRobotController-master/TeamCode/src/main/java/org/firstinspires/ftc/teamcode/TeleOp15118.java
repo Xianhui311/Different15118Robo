@@ -20,7 +20,7 @@ public class TeleOp15118 extends LinearOpMode
         initialize();
 
         waitForStart();
-        final Runnable checkP1 = new Runnable() {
+        Runnable checkP1 = new Runnable() {
             @Override
             public void run() {
                 checkP1();
@@ -35,6 +35,7 @@ public class TeleOp15118 extends LinearOpMode
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(2);
         executor.scheduleAtFixedRate(checkP1, 0, 1, TimeUnit.MILLISECONDS);
         executor.scheduleAtFixedRate(checkP2, 0, 1, TimeUnit.MILLISECONDS);
+        while(opModeIsActive());
     }
 
     private void initialize()
