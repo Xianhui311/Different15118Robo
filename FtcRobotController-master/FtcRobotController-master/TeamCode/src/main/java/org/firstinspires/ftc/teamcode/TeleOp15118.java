@@ -51,7 +51,7 @@ public class TeleOp15118 extends LinearOpMode
         fl.setPower(forward + turn + strafe);
         fr.setPower(forward - turn - strafe);
         bl.setPower(forward + turn - strafe);
-        br.setPower(forward - turn + strafe);
+        br.setPower((forward - turn + strafe)*-1);
     }
 
     private void checkP1()
