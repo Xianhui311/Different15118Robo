@@ -44,6 +44,8 @@ public class TeleOp15118 extends LinearOpMode
         fr = hardwareMap.get(DcMotor.class, "front_right");
         bl = hardwareMap.get(DcMotor.class, "back_left");
         br = hardwareMap.get(DcMotor.class, "back_right");
+        
+        intake = hardwareMap.get(DcMotor.class, "intake");
     }
 
     private void move(double strafe, double forward, double turn)
@@ -53,12 +55,22 @@ public class TeleOp15118 extends LinearOpMode
         bl.setPower(forward + turn - strafe);
         br.setPower((forward - turn + strafe)*-1);
     }
+    
+    private void intake()
+    {
+        //CHANGE THE POWER OF THE INTAKE HERE
+        intake.setPower(100)
+    }
 
     private void checkP1()
     {
-        if(!gamepad1.atRest());
+        if(!gamepad1.atRest())
         {
             doTask("move");
+        }
+        if(gamepad1.a)
+        {
+            doTask("intake);
         }
     }
     private void checkP2()
@@ -76,6 +88,15 @@ public class TeleOp15118 extends LinearOpMode
                 @Override
                 public void run() {
                     move(gamepad1.left_stick_x, gamepad1.left_stick_y, gamepad1.right_stick_x);
+                }
+            };
+        }
+        if(taskName.equals("intake"))
+        {
+            r = new Runnable() {
+                @Override
+                public void run() {
+                    intake();
                 }
             };
         }
