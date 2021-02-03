@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class TeleOp15118 extends LinearOpMode
 {
 
-    DcMotor fl, fr, bl, br;
+    DcMotor fl, fr, bl, br, intake, outtake;
 
     @Override
     public void runOpMode() throws InterruptedException
@@ -46,6 +46,7 @@ public class TeleOp15118 extends LinearOpMode
         br = hardwareMap.get(DcMotor.class, "back_right");
         
         intake = hardwareMap.get(DcMotor.class, "intake");
+        outtake = hardwareMap.get(DcMotor.class, "outtake");
     }
 
     private void move(double strafe, double forward, double turn)
@@ -56,10 +57,28 @@ public class TeleOp15118 extends LinearOpMode
         br.setPower((forward - turn + strafe)*-1);
     }
     
-    private void intake()
+    private void intake(bool forwards, bool backwards)
     {
         //CHANGE THE POWER OF THE INTAKE HERE
-        intake.setPower(100)
+        float power = 0;
+        if(forwards)
+        {
+            //FORWARDS POWER
+            power = 1;
+        }
+        if(backwards)
+        {
+            //BACKWARDS POWER
+            power = -1;
+        }
+        intake.setPower(power);
+    }
+    
+    private void outtake(float power)
+    {
+        //REMOVE BELOW LINE TO ADD VARIABLE POWER
+        power = 1
+        outtake.setPower(power)
     }
 
     private void checkP1()
@@ -68,9 +87,13 @@ public class TeleOp15118 extends LinearOpMode
         {
             doTask("move");
         }
-        if(gamepad1.a)
+        if(gamepad1.right_bumper || gamepad1.left_bumper)
         {
-            doTask("intake);
+            doTask("intake");
+        }
+        if(gamepad1.right_trigger != 0)
+        {
+            doTask("outtake")
         }
     }
     private void checkP2()
@@ -96,7 +119,16 @@ public class TeleOp15118 extends LinearOpMode
             r = new Runnable() {
                 @Override
                 public void run() {
-                    intake();
+                    intake(gamepad1.right_bumper, gamepad1.left_bumper);
+                }
+            };
+        }
+        if(taskName.equals("outtake"))
+        {
+            r = new Runnable() {
+                @Override
+                public void run() {
+                    outtake(gamepad1.right_trigger);
                 }
             };
         }
