@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -13,7 +14,8 @@ public class TeleOp15118 extends LinearOpMode
 {
 
     DcMotor fl, fr, bl, br, intake, outtake;
-
+    Servo intakeSweeper;
+    
     @Override
     public void runOpMode() throws InterruptedException
     {
@@ -47,6 +49,11 @@ public class TeleOp15118 extends LinearOpMode
         
         intake = hardwareMap.get(DcMotor.class, "intake");
         outtake = hardwareMap.get(DcMotor.class, "outtake");
+        
+        intakeSweeper = hardwareMap.get(Servo.class, "intakeSweeper");
+        //CHANGE INTAKE SWEEPER RANGE HERE, CAN ALSO CHANGE VARIABLE OF SET POSITION IN INTAKESWEEPER() METHOD
+        maxRange = 50
+        intakeSweeper.scaleRange(0, (maxRange/270))
     }
 
     private void move(double strafe, double forward, double turn)
@@ -80,6 +87,12 @@ public class TeleOp15118 extends LinearOpMode
         power = 1
         outtake.setPower(power)
     }
+    
+    private void intakeSweeper(bool sweep)
+    {
+        intakeSweeper.setPosition(1)
+        intakeSweeper.setPosition(0)
+    }
 
     private void checkP1()
     {
@@ -94,6 +107,10 @@ public class TeleOp15118 extends LinearOpMode
         if(gamepad1.right_trigger != 0)
         {
             doTask("outtake")
+        }
+        if(gamepad1.x)
+        {
+            doTask("intakeSweep")
         }
     }
     private void checkP2()
@@ -129,6 +146,15 @@ public class TeleOp15118 extends LinearOpMode
                 @Override
                 public void run() {
                     outtake(gamepad1.right_trigger);
+                }
+            };
+        }
+        if(taskName.equals("intakeSweep"))
+        {
+            r = new Runnable() {
+                @Override
+                public void run() {
+                    intakeSweep(gamepad1.x);
                 }
             };
         }
