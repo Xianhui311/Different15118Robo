@@ -40,6 +40,11 @@ public class TeleOp15118 extends LinearOpMode
         while(opModeIsActive());
     }
 
+    private void temp()
+    {
+        System.out.println(intakeSweeper.getPosition());
+    }
+
     private void initialize()
     {
         fl = hardwareMap.get(DcMotor.class, "front_left");
@@ -52,8 +57,8 @@ public class TeleOp15118 extends LinearOpMode
         
         intakeSweeper = hardwareMap.get(Servo.class, "intakeSweeper");
         //CHANGE INTAKE SWEEPER RANGE HERE, CAN ALSO CHANGE VARIABLE OF SET POSITION IN INTAKESWEEPER() METHOD
-        maxRange = 50
-        intakeSweeper.scaleRange(0, (maxRange/270))
+        //maxRange = 50
+        //intakeSweeper.scaleRange(0, (maxRange/270))
     }
 
     private void move(double strafe, double forward, double turn)
@@ -64,7 +69,7 @@ public class TeleOp15118 extends LinearOpMode
         br.setPower((forward - turn + strafe)*-1);
     }
     
-    private void intake(bool forwards, bool backwards)
+    private void intake(boolean forwards, boolean backwards)
     {
         //CHANGE THE POWER OF THE INTAKE HERE
         float power = 0;
@@ -84,14 +89,14 @@ public class TeleOp15118 extends LinearOpMode
     private void outtake(float power)
     {
         //REMOVE BELOW LINE TO ADD VARIABLE POWER
-        power = 1
-        outtake.setPower(power)
+        power = 1;
+        outtake.setPower(power);
     }
     
-    private void intakeSweeper(bool sweep)
+    private void intakeSweep(boolean sweep)
     {
-        intakeSweeper.setPosition(1)
-        intakeSweeper.setPosition(0)
+        intakeSweeper.setPosition(1);
+        intakeSweeper.setPosition(0);
     }
 
     private void checkP1()
@@ -106,11 +111,15 @@ public class TeleOp15118 extends LinearOpMode
         }
         if(gamepad1.right_trigger != 0)
         {
-            doTask("outtake")
+            doTask("outtake");
         }
         if(gamepad1.x)
         {
-            doTask("intakeSweep")
+            doTask("intakeSweep");
+        }
+        if(gamepad1.a)
+        {
+            doTask("test");
         }
     }
     private void checkP2()
@@ -155,6 +164,15 @@ public class TeleOp15118 extends LinearOpMode
                 @Override
                 public void run() {
                     intakeSweep(gamepad1.x);
+                }
+            };
+        }
+        if(taskName.equals("test"))
+        {
+            r = new Runnable() {
+                @Override
+                public void run() {
+                    temp();
                 }
             };
         }
