@@ -16,7 +16,7 @@ public class AutonomousOp15118 extends TeleOp15118 {
         super.initialize();
         timer.reset();
         //Change seconds in timer 
-        park()
+        park();
     }
     public void park()
     {
